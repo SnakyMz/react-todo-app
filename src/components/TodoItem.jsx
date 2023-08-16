@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import styles from '../styles/TodoItem.module.css';
-const TodoItem = ({ itemProp, handleChange, delTodo }) => {
+const TodoItem = ({ itemProp, handleChange, delTodo, setUpdate }) => {
   const editInputRef = useRef(null);
   //const [updateInput, setUpdateInput] = useState(itemProp.title);
   const [editing, setEditing] = useState(false);
@@ -29,10 +29,14 @@ const TodoItem = ({ itemProp, handleChange, delTodo }) => {
   return (
     <li className={styles.item}>
       <div className={styles.content} style={viewMode}>
+        <input
+          type="checkbox"
+          checked={itemProp.completed}
+          onChange={() => handleChange(itemProp.id)}
+        />
         <button onClick={handleEditing}>Edit</button>
         <button onClick={() => delTodo(itemProp.id)}>Delete</button>
         <span style={itemProp.completed ? completedStyle : null}>{itemProp.title}</span>
-        {itemProp.title}
       </div>
       <input
         type="text"
