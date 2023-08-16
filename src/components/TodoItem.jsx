@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styles from '../styles/TodoItem.module.css';
 const TodoItem = ({ itemProp, handleChange, delTodo }) => {
+  const editInputRef = useRef(null);
+  //const [updateInput, setUpdateInput] = useState(itemProp.title);
   const [editing, setEditing] = useState(false);
   const completedStyle = {
     fontStyle: 'italic',
@@ -20,25 +22,28 @@ const TodoItem = ({ itemProp, handleChange, delTodo }) => {
   }
   const handleUpdatedDone = (event) => {
     if (event.key === 'Enter') {
+      setUpdate(editInputRef.current.value, itemProp.id);
       setEditing(false);
     }
   };
   return (
     <li className={styles.item}>
       <div className={styles.content} style={viewMode}>
-        <input
-          type="text"
-          value={itemProp.title}
-          className={styles.textInput}
-          style={editMode}
-          onChange={(e) => setUpdate(e.target.value, itemProp.id)}
-          onKeyDown={handleUpdatedDone}
-        />
         <button onClick={handleEditing}>Edit</button>
         <button onClick={() => delTodo(itemProp.id)}>Delete</button>
-        <span style={itemProp.completed ? completedStyle : null}></span>
+        <span style={itemProp.completed ? completedStyle : null}>{itemProp.title}</span>
         {itemProp.title}
       </div>
+      <input
+        type="text"
+        //value={updateInput}
+        ref={editInputRef}
+        defaultValue={itemProp.title}
+        className={styles.textInput}
+        style={editMode}
+        //onChange={(e) => setUpdateInput(e.target.value)}
+        onKeyDown={handleUpdatedDone}
+      />
     </li>
   );
 };
